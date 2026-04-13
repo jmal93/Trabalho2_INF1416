@@ -1,6 +1,11 @@
 package org.example;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.example.model.CatalogModel;
+import org.example.model.FileEntryModel;
+import org.example.service.CatalogService;
+import org.example.model.DigestEntryModel;
 import org.junit.jupiter.api.Test;
 
 class CatalogServiceTest {

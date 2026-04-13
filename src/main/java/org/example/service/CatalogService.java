@@ -1,5 +1,8 @@
-package org.example;
+package org.example.service;
 
+import org.example.model.FileEntryModel;
+import org.example.model.CatalogModel;
+import org.example.model.DigestEntryModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
