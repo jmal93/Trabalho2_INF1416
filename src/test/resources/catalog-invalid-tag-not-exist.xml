@@ -1,0 +1,8 @@
+<CATALOG>
+    <FILE_ENTRY>
+        <DIGEST_ENTRY>
+            <DIGEST_TYPE>SHA256</DIGEST_TYPE>
+            <DIGEST_HEX>abc123</DIGEST_HEX>
+        </DIGEST_ENTRY>
+    </FILE_ENTRY>
+</CATALOG>

@@ -19,13 +19,5 @@ public class Main {
         byte[] digest = messageDigest.digest();
         System.out.println("\nDigest length: " + digest.length * 8 + " bits");
 
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < digest.length; i++) {
-            String.hex = Integer.toHexString(0x0100 + (digest[i] & 0x00FF)).substring(i);
-            buffer.append((hex.length() < 2 ? "0" : "") + hex);
-        }
-
-        System.out.println("\nDigest(hex):");
-        System.out.println(buffer.toString());
     }
 }
