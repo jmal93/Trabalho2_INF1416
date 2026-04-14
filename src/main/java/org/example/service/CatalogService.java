@@ -11,6 +11,11 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,5 +103,77 @@ public class CatalogService {
         }
 
         return text.trim();
+    }
+
+    public void addDigest(
+            CatalogModel catalogModel,
+            String fileName,
+            String digestType,
+            String digestHex
+    ) {
+        FileEntryModel fileEntry = catalogModel.findFileEntryByName(fileName);
+
+        if (fileEntry == null) {
+            List<DigestEntryModel> digestEntryList = new ArrayList<>();
+            digestEntryList.add(new DigestEntryModel(digestType, digestHex));
+
+            FileEntryModel newFileEntry = new FileEntryModel(fileName, digestEntryList);
+            catalogModel.addFileEntry(newFileEntry);
+            return;
+        }
+
+        DigestEntryModel existingDigest = fileEntry.findDigestByType(digestType);
+
+        if (existingDigest == null) {
+            fileEntry.addDigestEntry(new DigestEntryModel(digestType, digestHex));
+        }
+    }
+
+    public void save(CatalogModel catalog, String filePath) throws Exception {
+        Document document = documentBuilder.newDocument();
+
+        // raiz <CATALOG>
+        Element root = document.createElement("CATALOG");
+        document.appendChild(root);
+
+        for (FileEntryModel fileEntry : catalog.getFileEntryList()) {
+
+            // <FILE_ENTRY>
+            Element fileEntryElement = document.createElement("FILE_ENTRY");
+            root.appendChild(fileEntryElement);
+
+            // <FILE_NAME>
+            Element fileNameElement = document.createElement("FILE_NAME");
+            fileNameElement.setTextContent(fileEntry.getFileName());
+            fileEntryElement.appendChild(fileNameElement);
+
+            // múltiplos DIGEST_ENTRY
+            for (DigestEntryModel digestEntry : fileEntry.getDigestEntryList()) {
+
+                Element digestEntryElement = document.createElement("DIGEST_ENTRY");
+                fileEntryElement.appendChild(digestEntryElement);
+
+                Element digestTypeElement = document.createElement("DIGEST_TYPE");
+                digestTypeElement.setTextContent(digestEntry.getTypeDigest());
+                digestEntryElement.appendChild(digestTypeElement);
+
+                Element digestHexElement = document.createElement("DIGEST_HEX");
+                digestHexElement.setTextContent(digestEntry.getDigestHex());
+                digestEntryElement.appendChild(digestHexElement);
+            }
+        }
+
+        // escrever no arquivo
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+
+        // formatação (opcional, mas bom)
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(new File(filePath));
+
+        transformer.transform(source, result);
     }
 }
