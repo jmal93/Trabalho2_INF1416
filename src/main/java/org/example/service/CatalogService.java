@@ -28,6 +28,25 @@ public class CatalogService {
         return parseFile(document);
     }
 
+    private Document loadDocument(String filePath) throws Exception {
+        File file = new File(filePath);
+        validDocument(file);
+        Document document = documentBuilder.parse(file);
+        document.normalize();
+
+        return document;
+    }
+
+    private void validDocument(File file) {
+        if (!file.exists()) {
+            throw new IllegalArgumentException("Arquivo não encontrado");
+        }
+
+        if (!file.isFile()) {
+            throw new IllegalArgumentException("Caminho não é um arquivo");
+        }
+    }
+
     private CatalogModel parseFile(Document document) {
         NodeList fileEntryNodeList = document.getElementsByTagName("FILE_ENTRY");
         List<FileEntryModel> fileEntryList = new ArrayList<FileEntryModel>();
@@ -79,24 +98,5 @@ public class CatalogService {
         }
 
         return text.trim();
-    }
-
-    private Document loadDocument(String filePath) throws Exception {
-        File file = new File(filePath);
-        validDocument(file);
-        Document document = documentBuilder.parse(file);
-        document.normalize();
-
-        return document;
-    }
-
-    private void validDocument(File file) {
-        if (!file.exists()) {
-            throw new IllegalArgumentException("Arquivo não encontrado");
-        }
-
-        if (!file.isFile()) {
-            throw new IllegalArgumentException("Caminho não é um arquivo");
-        }
     }
 }
