@@ -24,11 +24,11 @@ class CatalogServiceTest {
         assertEquals(2, firstFile.getDigestEntryList().size());
 
         DigestEntryModel firstDigest = firstFile.getDigestEntryList().get(0);
-        assertEquals("SHA1", firstDigest.getTipoDigest());
+        assertEquals("SHA1", firstDigest.getTypeDigest());
         assertEquals("8d901bb3a2840ac030f7dbdd7cb823808858cb2f", firstDigest.getDigestHex());
 
         DigestEntryModel secondDigest = firstFile.getDigestEntryList().get(1);
-        assertEquals("MD5", secondDigest.getTipoDigest());
+        assertEquals("MD5", secondDigest.getTypeDigest());
         assertEquals("42b83991bd1b47b373074111c34fb428", secondDigest.getDigestHex());
 
         FileEntryModel secondFile = catalog.getFileEntryList().get(1);
@@ -36,7 +36,7 @@ class CatalogServiceTest {
         assertEquals(1, secondFile.getDigestEntryList().size());
 
         DigestEntryModel thirdDigest = secondFile.getDigestEntryList().get(0);
-        assertEquals("SHA256", thirdDigest.getTipoDigest());
+        assertEquals("SHA256", thirdDigest.getTypeDigest());
         assertEquals("c8db093d264aa744d178470ad97aa64e67e84ab96e3b3310fb6f0eda429e6622", thirdDigest.getDigestHex());
     }
 

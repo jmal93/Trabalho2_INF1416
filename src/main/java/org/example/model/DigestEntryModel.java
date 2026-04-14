@@ -1,8 +1,8 @@
 package org.example.model;
 
 public class DigestEntryModel {
-    private String tipoDigest;
-    private String digestHex;
+    private final String tipoDigest;
+    private final String digestHex;
 
 
     public DigestEntryModel(String tipoDigest, String digestHex) {
@@ -10,7 +10,7 @@ public class DigestEntryModel {
         this.digestHex = digestHex;
     }
 
-    public String getTipoDigest() {
+    public String getTypeDigest() {
         return tipoDigest;
     }
 
